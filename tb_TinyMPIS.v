@@ -56,4 +56,51 @@ module tb_TinyMIPS;
 		uut2.mem[4] = 16'b0001001001000001; // ADDi R1 R1 1	// i++
 		uut2.mem[5] = 16'b1001001011111110; // BLT R1 R3 -2	// if (i < max) then go back to address 5-2=3
 	end
+
+    initial begin
+    // Test 2: Addition and Branching
+    uut2.mem[0] = 16'b0111010000000001; // CPi R1 1       // R1 = 1
+    uut2.mem[1] = 16'b0111100000000010; // CPi R3 2       // R3 = 2
+    uut2.mem[2] = 16'b0000010010000000; // ADD R2 R1 R0  // R2 = R1 + R0 (R0 = 0)
+    uut2.mem[3] = 16'b0000010100010000; // ADD R4 R1 R2  // R4 = R1 + R2 (R1 = 1, R2 = 1)
+    uut2.mem[4] = 16'b1001100100111010; // BLT R1 R3 -6   // if (R1 < R3) then PC = PC - 6
+    uut2.mem[5] = 16'b0111111000000000; // CPi R7 0       // R7 = 0
+    uut2.mem[6] = 16'b0000100000000000; // ADD R0 R0 R0  // R0 = R0 + R0 (R0 = 0)
+    uut2.mem[7] = 16'b0000100001000000; // ADD R0 R0 R1  // R0 = R0 + R1 (R0 = 1)
+    uut2.mem[8] = 16'b0001000100000001; // ADDi R1 R0 1   // R1 = R1 + 1 (R1 = 2)
+    uut2.mem[9] = 16'b1001100100111010; // BLT R1 R3 -6   // if (R1 < R3) then PC = PC - 6
+    uut2.mem[10] = 16'b0000000000000000; // Halt
+end
+
+initial begin
+    // Test 3: Multiplication and Immediate Branching
+    uut2.mem[0] = 16'b0111010000000010; // CPi R1 2       // R1 = 2
+    uut2.mem[1] = 16'b0111100000000011; // CPi R3 3       // R3 = 3
+    uut2.mem[2] = 16'b1110010010000000; // MUL R2 R1 R0   // R2 = R1 * R0 (R0 = 0)
+    uut2.mem[3] = 16'b1110010100010000; // MUL R4 R1 R2   // R4 = R1 * R2 (R1 = 2, R2 = 0)
+    uut2.mem[4] = 16'b1000100111111010; // BLTi R1 6      // if (R1 < 6) then PC = PC + 6
+    uut2.mem[5] = 16'b0111111000000000; // CPi R7 0       // R7 = 0
+    uut2.mem[6] = 16'b0000100000000000; // ADD R0 R0 R0  // R0 = R0 + R0 (R0 = 0)
+    uut2.mem[7] = 16'b0000100001000000; // ADD R0 R0 R1  // R0 = R0 + R1 (R0 = 2)
+    uut2.mem[8] = 16'b0001000100000001; // ADDi R1 R0 1   // R1 = R1 + 1 (R1 = 3)
+    uut2.mem[9] = 16'b1000100111111010; // BLTi R1 6      // if (R1 < 6) then PC = PC + 6
+    uut2.mem[10] = 16'b0000000000000000; // Halt
+end
+
+initial begin
+    // Test 4: NAND and Immediate Copy Instructions
+    uut2.mem[0] = 16'b0111010000000101; // CPi R1 5       // R1 = 5
+    uut2.mem[1] = 16'b0111100000000010; // CPi R3 2       // R3 = 2
+    uut2.mem[2] = 16'b0010110010000000; // NAND R2 R1 R0  // R2 = ~(R1 & R0) (R0 = 0)
+    uut2.mem[3] = 16'b0010110100010000; // NAND R4 R1 R2  // R4 = ~(R1 & R2) (R1 = 5, R2 = 0)
+    uut2.mem[4] = 16'b1010100111111010; // BLTi R1 6      // if (R1 < 6) then PC = PC + 6
+    uut2.mem[5] = 16'b1000100111111010; // BLTi R1 6      // if (R1 < 6) then PC = PC + 6
+    uut2.mem[6] = 16'b0111111000000000; // CPi R7 0       // R7 = 0
+    uut2.mem[7] = 16'b0000100000000000; // ADD R0 R0 R0  // R0 = R0 + R0 (R0 = 0)
+    uut2.mem[8] = 16'b0000100001000000; // ADD R0 R0 R1  // R0 = R0 + R1 (R0 = 5)
+    uut2.mem[9] = 16'b0001000100000001; // ADDi R1 R0 1   // R1 = R1 + 1 (R1 = 6)
+    uut2.mem[10] = 16'b1000100111111010; // BLTi R1 6      // if (R1 < 6) then PC = PC + 6
+    uut2.mem[11] = 16'b0000000000000000; // Halt
+end
+
 endmodule
